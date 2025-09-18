@@ -1,15 +1,18 @@
 package testScript;
 
+import java.io.IOException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import automationCore.Base;
 
 public class LoginTest extends Base {
 
-	@Test
+	@Test(dataProvider = "loginProvider")
 	public void verify_LoginPage_with_valid_username_and_valid_password() {
 		WebElement loginField = driver.findElement(By.name("username"));
 		loginField.sendKeys("admin");
@@ -22,6 +25,16 @@ public class LoginTest extends Base {
 		String expectedTitle = "Home - Maxfest Enterprises PVT LTD, Kochi";
 		Assert.assertEquals(actualTitle, expectedTitle,"Login failed for valid credentials");
 	}
+	
+	@DataProvider(name = "loginProvider")
+	public Object[][] getDataFromDataProvider() throws IOException {
+
+		return new Object[][] { new Object[] { "admin", "admin22" }, new Object[] { "admin123", "123" },
+				// new Object[] {ExcelUtility.getStringData(3,
+				// 0,"Login"),ExcelUtility.getStringData(3,1 ,"Login")}
+		};
+	}
+
 	
 	@Test
 	public void verify_LoginPage_with_invalid_username_and_valid_password() {
